@@ -29,14 +29,16 @@ export default function Page() {
   }
 
   function setTimer() {
-    if (session === "work") {
-      updateTime(
-        (sessionStorage.getItem("workTime") as unknown as number) * 60,
-      );
-    } else {
-      updateTime(
-        (sessionStorage.getItem("breakTime") as unknown as number) * 60,
-      );
+    if (typeof window !== "undefined") {
+      if (session === "work") {
+        updateTime(
+          (sessionStorage.getItem("workTime") as unknown as number) * 60,
+        );
+      } else {
+        updateTime(
+          (sessionStorage.getItem("breakTime") as unknown as number) * 60,
+        );
+      }
     }
   }
 
