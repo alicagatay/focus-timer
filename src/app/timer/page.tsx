@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Page() {
   const [timer, updateTime]: [number, (n: number) => void] = useState(0);
@@ -12,9 +12,6 @@ export default function Page() {
 
   const [textColour, setTextColour]: [string, (s: string) => void] =
     useState("text-white");
-
-  let timeLeftInMinutes = 0;
-  let timeLeftInSeconds = 0;
 
   function changeSession() {
     if (session === "work") {
@@ -47,15 +44,16 @@ export default function Page() {
       changeSession();
       setTimer();
     } else {
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         updateTime(timer - 1);
       }, 1000);
+      return timeoutId; // Return the ID of the timeout
     }
   }
 
   function convertTime() {
-    timeLeftInMinutes = Math.floor(timer / 60);
-    timeLeftInSeconds = timer % 60;
+    const timeLeftInMinutes = Math.floor(timer / 60);
+    const timeLeftInSeconds = timer % 60;
     let timeLeftInSecondsString = `${timeLeftInSeconds}`;
     let timeLeftInMinutesString = `${timeLeftInMinutes}`;
     if (timeLeftInSeconds < 10) {
@@ -68,6 +66,11 @@ export default function Page() {
   }
 
   countDown();
+
+  useEffect(() => {
+    const timerId = countDown();
+    return () => clearTimeout(timerId); // Clean up the timer
+  }, [timer]); // Depend on timer
   return (
     <div
       className={`flex h-screen w-screen items-center justify-center ${backgroundColour} ${textColour}`}
