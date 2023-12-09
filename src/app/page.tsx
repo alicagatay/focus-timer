@@ -14,8 +14,11 @@ export default function Page() {
     const breakTime = document.getElementById("break-time") as HTMLInputElement;
 
     if (workTime.value !== "" && breakTime.value !== "") {
-      sessionStorage.setItem("workTime", workTime.value);
-      sessionStorage.setItem("breakTime", breakTime.value);
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("workTime", workTime.value);
+        sessionStorage.setItem("breakTime", breakTime.value);
+      }
+
       setPathname("/timer");
       setButtonText("Press to start the timer.");
     } else {
