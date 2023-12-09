@@ -5,7 +5,13 @@ export default function Page() {
   const [timer, updateTime]: [number, (n: number) => void] = useState(0);
   type sessionType = "work" | "break";
   const [session, setSession]: [sessionType, (s: sessionType) => void] =
-    useState<sessionType>("work");
+    useState<sessionType>("break");
+
+  const [backgroundColour, setBackgroundColour]: [string, (s: string) => void] =
+    useState("bg-black");
+
+  const [textColour, setTextColour]: [string, (s: string) => void] =
+    useState("text-white");
 
   let timeLeftInMinutes = 0;
   let timeLeftInSeconds = 0;
@@ -13,8 +19,12 @@ export default function Page() {
   function changeSession() {
     if (session === "work") {
       setSession("break");
+      setBackgroundColour("bg-white");
+      setTextColour("text-black");
     } else {
       setSession("work");
+      setBackgroundColour("bg-black");
+      setTextColour("text-white");
     }
   }
 
@@ -57,7 +67,9 @@ export default function Page() {
 
   countDown();
   return (
-    <div className="flex h-screen w-screen items-center justify-center">
+    <div
+      className={`flex h-screen w-screen items-center justify-center ${backgroundColour} ${textColour}`}
+    >
       <p className="text-[140px]">{convertTime()}</p>
     </div>
   );
