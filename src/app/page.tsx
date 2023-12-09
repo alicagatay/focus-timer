@@ -1,16 +1,30 @@
 "use client";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Page() {
+  const [pathname, setPathname]: [string, (s: string) => void] = useState("/");
+
+  const [buttonText, setButtonText]: [string, (s: string) => void] = useState(
+    "Submit work and break time data.",
+  );
+
   function storeWorkTime() {
     const workTime = document.getElementById("work-time") as HTMLInputElement;
     const breakTime = document.getElementById("break-time") as HTMLInputElement;
-    if (workTime.value !== "" || breakTime.value !== "") {
+
+    if (workTime.value !== "" && breakTime.value !== "") {
       sessionStorage.setItem("workTime", workTime.value);
       sessionStorage.setItem("breakTime", breakTime.value);
+      setPathname("/timer");
+      setButtonText("Press to start the timer.");
     } else {
       alert("Please enter a value for both work and break time.");
     }
+  }
+
+  function returnPathname(): string {
+    return pathname;
   }
 
   return (
@@ -40,7 +54,7 @@ export default function Page() {
 
         <Link
           href={{
-            pathname: "/timer",
+            pathname: returnPathname(),
           }}
         >
           <button
@@ -48,7 +62,7 @@ export default function Page() {
             type="submit"
             onClick={storeWorkTime}
           >
-            Submit work and break time data.
+            {buttonText}
           </button>
         </Link>
       </div>
