@@ -6,11 +6,12 @@ export default function Page() {
     const workTime = document.getElementById("work-time") as HTMLInputElement;
     const breakTime = document.getElementById("break-time") as HTMLInputElement;
     if (workTime.value !== "" || breakTime.value !== "") {
-      localStorage.setItem("workTime", workTime.value);
-      localStorage.setItem("breakTime", breakTime.value);
+      sessionStorage.setItem("workTime", workTime.value);
+      sessionStorage.setItem("breakTime", breakTime.value);
     } else {
       alert("Please enter a value for both work and break time.");
     }
+    console.log(sessionStorage);
   }
 
   return (
