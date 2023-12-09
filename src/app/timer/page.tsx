@@ -41,9 +41,7 @@ export default function Page() {
   countDown();
   return (
     <div className="flex h-screen w-screen items-center justify-center">
-      <div className="flex h-[500px] w-[700px] flex-col items-center justify-center space-y-[30px] rounded-[30px] border-[4px] border-black text-center">
-        <p className="text-7xl">{timer}</p>
-      </div>
+      <p className="text-[140px]">{timer}</p>
     </div>
   );
 }
