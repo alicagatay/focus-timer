@@ -1,20 +1,48 @@
 "use client";
-export default function Page() {
-  console.log(sessionStorage);
+import { useState } from "react";
 
+export default function Page() {
+  const [timer, updateTime]: [number, (n: number) => void] = useState(0);
+  type sessionType = "work" | "break";
+  const [session, setSession]: [sessionType, (s: sessionType) => void] =
+    useState<sessionType>("work");
+
+  function changeSession() {
+    if (session === "work") {
+      setSession("break");
+    } else {
+      setSession("work");
+    }
+  }
+
+  function setTimer() {
+    if (session === "work") {
+      updateTime(
+        (sessionStorage.getItem("workTime") as unknown as number) * 60,
+      );
+    } else {
+      updateTime(
+        (sessionStorage.getItem("breakTime") as unknown as number) * 60,
+      );
+    }
+  }
+
+  function countDown() {
+    if (timer === 0) {
+      changeSession();
+      setTimer();
+    } else {
+      setTimeout(() => {
+        updateTime(timer - 1);
+      }, 1000);
+    }
+  }
+
+  countDown();
   return (
     <div className="flex h-screen w-screen items-center justify-center">
       <div className="flex h-[500px] w-[700px] flex-col items-center justify-center space-y-[30px] rounded-[30px] border-[4px] border-black text-center">
-        <h1 className="text-4xl font-bold">Welcome to the Pomodoro Timer!</h1>
-        <p className="text-xl">
-          This is a timer that will help you work for a set amount of time and
-          then take a break for a set amount of time.
-        </p>
-        <p className="text-xl">
-          Please enter the amount of time you want to work for and the amount of
-          time you want to break for in minutes.
-        </p>
-        <p className="text-xl">Then click the button to start the timer.</p>
+        <p className="text-7xl">{timer}</p>
       </div>
     </div>
   );
