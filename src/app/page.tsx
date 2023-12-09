@@ -11,7 +11,6 @@ export default function Page() {
     } else {
       alert("Please enter a value for both work and break time.");
     }
-    console.log(sessionStorage);
   }
 
   return (
@@ -41,7 +40,7 @@ export default function Page() {
 
         <Link
           href={{
-            pathname: "/",
+            pathname: "/timer",
           }}
         >
           <button
