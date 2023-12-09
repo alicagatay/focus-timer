@@ -7,6 +7,9 @@ export default function Page() {
   const [session, setSession]: [sessionType, (s: sessionType) => void] =
     useState<sessionType>("work");
 
+  let timeLeftInMinutes = 0;
+  let timeLeftInSeconds = 0;
+
   function changeSession() {
     if (session === "work") {
       setSession("break");
@@ -38,10 +41,24 @@ export default function Page() {
     }
   }
 
+  function convertTime() {
+    timeLeftInMinutes = Math.floor(timer / 60);
+    timeLeftInSeconds = timer % 60;
+    let timeLeftInSecondsString = `${timeLeftInSeconds}`;
+    let timeLeftInMinutesString = `${timeLeftInMinutes}`;
+    if (timeLeftInSeconds < 10) {
+      timeLeftInSecondsString = `0${timeLeftInSeconds}`;
+    }
+    if (timeLeftInMinutes < 10) {
+      timeLeftInMinutesString = `0${timeLeftInMinutes}`;
+    }
+    return `${timeLeftInMinutesString}:${timeLeftInSecondsString}`;
+  }
+
   countDown();
   return (
     <div className="flex h-screen w-screen items-center justify-center">
-      <p className="text-[140px]">{timer}</p>
+      <p className="text-[140px]">{convertTime()}</p>
     </div>
   );
 }
