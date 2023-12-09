@@ -65,8 +65,6 @@ export default function Page() {
     return `${timeLeftInMinutesString}:${timeLeftInSecondsString}`;
   }
 
-  countDown();
-
   useEffect(() => {
     const timerId = countDown();
     return () => clearTimeout(timerId); // Clean up the timer
