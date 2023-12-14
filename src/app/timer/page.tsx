@@ -1,7 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Page() {
+  const breakNotification = () => toast("Time for a break!");
+  const workNotification = () => toast("Time to get back to work!");
   const [timer, updateTime]: [number, (n: number) => void] = useState(0);
   type sessionType = "work" | "break";
   const [session, setSession]: [sessionType, (s: sessionType) => void] =
@@ -13,15 +17,23 @@ export default function Page() {
   const [textColour, setTextColour]: [string, (s: string) => void] =
     useState("text-white");
 
+  type notificationThemeType = "light" | "dark" | "colored";
+  const [notificationTheme, setNotificationTheme] =
+    useState<notificationThemeType>("light");
+
   function changeSession() {
     if (session === "work") {
       setSession("break");
       setBackgroundColour("bg-white");
       setTextColour("text-black");
+      setNotificationTheme("light");
+      breakNotification();
     } else {
       setSession("work");
       setBackgroundColour("bg-black");
       setTextColour("text-white");
+      setNotificationTheme("dark");
+      workNotification();
     }
   }
 
@@ -47,7 +59,7 @@ export default function Page() {
       const timeoutId = setTimeout(() => {
         updateTime(timer - 1);
       }, 1000);
-      return timeoutId; // Return the ID of the timeout
+      return timeoutId;
     }
   }
 
@@ -67,13 +79,25 @@ export default function Page() {
 
   useEffect(() => {
     const timerId = countDown();
-    return () => clearTimeout(timerId); // Clean up the timer
-  }, [timer]); // Depend on timer
+    return () => clearTimeout(timerId);
+  }, [timer]);
   return (
     <div
       className={`flex h-screen w-screen items-center justify-center ${backgroundColour} ${textColour}`}
     >
       <p className="text-[140px]">{convertTime()}</p>
+      <ToastContainer
+        position="top-right"
+        autoClose={1000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme={notificationTheme}
+      />
     </div>
   );
 }
