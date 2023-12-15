@@ -21,6 +21,20 @@ export default function Page() {
   const [notificationTheme, setNotificationTheme] =
     useState<notificationThemeType>("light");
 
+  function playNotificationSound() {
+    const soundFile = "/sounds/notify.wav";
+    const sound = new Audio(soundFile);
+
+    sound
+      .play()
+      .then(() => {
+        console.log("Playback successful");
+      })
+      .catch((error) => {
+        console.error("Playback failed", error);
+      });
+  }
+
   function changeSession() {
     if (session === "work") {
       setSession("break");
@@ -28,12 +42,14 @@ export default function Page() {
       setTextColour("text-black");
       setNotificationTheme("light");
       breakNotification();
+      playNotificationSound();
     } else {
       setSession("work");
       setBackgroundColour("bg-black");
       setTextColour("text-white");
       setNotificationTheme("dark");
       workNotification();
+      playNotificationSound();
     }
   }
 
